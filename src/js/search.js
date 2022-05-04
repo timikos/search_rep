@@ -1,114 +1,98 @@
-const searchBlock = document.querySelector(".search-rep")
-const resultsArea = document.querySelector(".results")
-const searchArea = document.querySelector("#search")
-const optGroupResults = document.querySelector(".context-res")
-const suggBox = document.querySelector(".opt")
+const resultsArea = document.querySelector(".results__container")
+const searchArea = document.querySelector("#options__search")
+const optGroupResults = document.querySelector(".options__context-menu")
+const optContainer = document.querySelector(".options__container")
 
-
-let text
-let results = []
+let textInput
+let arrOptions = []
 
 const debounce = (fn, debounceTime) => {
   let timer
   return function(...args){
-    const fnCall = () => {
-      fn.apply(this, args)
-    }
+    const fnCall = () => fn.apply(this, args)
     clearTimeout(timer)
     timer = setTimeout(fnCall,debounceTime)
   }
 }
 
-function createOption(arr) {
+function createTemplateOption(elem) {
+  const option = document.createElement("option")
+  option.dataset.name = elem.name
+  option.dataset.owner = elem.owner
+  option.dataset.stars = elem.stars
+  option.textContent = elem.name
+  return option
+}
 
-  if (suggBox.children.length === 0) {
+function createOptions(arr) {
+  if (optContainer.children.length === 0) {
     for (let i = 0; i < 5; i++) {
-      const option = document.createElement("option")
-      console.log(arr[i])
-      option.dataset.name = arr[i].name
-      option.dataset.owner = arr[i].owner
-      option.dataset.stars = arr[i].stars
-      option.textContent = arr[i].name
-      suggBox.appendChild(option)
+      optContainer.appendChild(createTemplateOption(arr[i]))
     }
   }
   else {
     for (let i = 0; i < 5; i++) {
-      const option = document.createElement("option")
-      option.dataset.name = arr[i].name
-      option.dataset.owner = arr[i].owner
-      option.dataset.stars = arr[i].stars
-      option.textContent = arr[i].name
-      suggBox.replaceChild(option, suggBox.childNodes[i])
+      optContainer.replaceChild(createTemplateOption(arr[i]), optContainer.childNodes[i])
     }
   }
 }
 
-
-function getReq(text) {
+function getRequest(text) {
   const xhr = new XMLHttpRequest()
   xhr.open("GET",`https://api.github.com/search/repositories?q=${text}`)
   xhr.setRequestHeader("Accept", "application/vnd.github.v3+json")
   xhr.send()
   xhr.onload = function() {
-    let a = JSON.parse(xhr.response)
-    results = []
-    for (let elem of Object.values(a.items)){
-      let res = {}
-      res.name = elem.name
-      res.stars = elem.stargazers_count
-      res.owner = elem.owner.login
-      results.unshift(res)
+    let parsedResponse = JSON.parse(xhr.response)
+    arrOptions = []
+    for (let elem of Object.values(parsedResponse.items)){
+      let repository = {}
+      repository.name = elem.name
+      repository.stars = elem.stargazers_count
+      repository.owner = elem.owner.login
+      arrOptions.unshift(repository)
+      optGroupResults.style.display = "block"
     }
-    createOption(results)
+    createOptions(arrOptions)
   }
 }
 
-let debGetReq = debounce(getReq, 600)
+let debGetRequest = debounce(getRequest, 600)
 
-function createResult(response){
+function createTemplateResult(element){
   const fragment = document.createDocumentFragment()
-  const result = document.createElement("div")
-  result.classList.add("test")
-  const name = document.createElement("p")
-  name.textContent = `Name: ${response.dataset.name}`
-  const owner = document.createElement("p")
-  owner.textContent = `Owner: ${response.dataset.owner}`
-  const stars = document.createElement("p")
-  stars.textContent = `Stars: ${response.dataset.stars}`
-  const delImg = document.createElement('img')
-  delImg.src = "./img/del.png"
-  delImg.classList.add("del-btn")
-  delImg.onclick = function(){
-    result.style.display = "none"
-    resultsArea.removeChild(result)
+  const repository = document.createElement("div")
+  repository.classList.add("option_created")
+  const nameRepository = document.createElement("p")
+  nameRepository.textContent = `Name: ${element.dataset.name}`
+  const ownerRepository = document.createElement("p")
+  ownerRepository.textContent = `Owner: ${element.dataset.owner}`
+  const starsRepository = document.createElement("p")
+  starsRepository.textContent = `Stars: ${element.dataset.stars}`
+  const deleteButton = document.createElement('img')
+  deleteButton.src = "./img/del.png"
+  deleteButton.classList.add("btn_delete")
+  deleteButton.onclick = function(){
+    resultsArea.removeChild(repository)
   }
-  result.appendChild(name)
-  result.appendChild(owner)
-  result.appendChild(stars)
-  result.appendChild(delImg)
-  result.style.border = "1px solid black"
-  result.style.background = "#E27BEB"
-  fragment.appendChild(result)
+  repository.appendChild(nameRepository)
+  repository.appendChild(ownerRepository)
+  repository.appendChild(starsRepository)
+  repository.appendChild(deleteButton)
+  fragment.appendChild(repository)
   return fragment
 }
 
-searchArea.addEventListener("focus", (e) => {
-  optGroupResults.style.display = "block"
-})
-
 searchArea.addEventListener("keyup", (e) => {
-  text = e.target.value
-  debGetReq(text)
+  textInput = e.target.value
+  debGetRequest(textInput)
 })
 
 optGroupResults.addEventListener("click", (e) => {
   let target = e.target
-  let arr = Array.from(resultsArea.children)
-  console.log(arr)
-  console.log(target)
-  arr.push(createResult(target))
-  arr.forEach(elem => {
+  let arrRepositories = Array.from(resultsArea.children)
+  arrRepositories.push(createTemplateResult(target))
+  arrRepositories.forEach(elem => {
     if (resultsArea.children.length < 3){
       resultsArea.appendChild(elem)
     }
