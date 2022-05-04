@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Search repo</title>
+    <title>Search repositories</title>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link href="style.css" rel="stylesheet"></head>
 <body>
   <main class="container">
-    <div class="content">
-      <div class="search-rep">
-        <form action="formdata" name="form">
-          <input id="search" type="text" value="">
-            <div class="context-res">
-              <select class="opt" multiple="multiple" size="5">
-
-              </select>
-            </div>
-
-        </form>
-      </div>
-      <div class="results">
-
-      </div>
+    <form>
+      <input id="options__search" type="text" value="">
+        <div class="options__context-menu">
+          <select class="options__container" multiple="multiple" size="5"></select>
+        </div>
+    </form>
+    <div class="results__container">
     </div>
   </main>
 <script type="text/javascript" src="./js/bundle.js"></script></body>

@@ -1,3 +1,6 @@
+@font-face {
+  font-family: Roboto;
+}
 html {
   box-sizing: border-box;
 }
@@ -10,66 +13,66 @@ body {
   padding: 0;
   margin: 0 0 0 0;
   overflow-x: hidden;
-  font-family: TT Lakes serif;
+  font-family: "Roboto" serif;
 }
 
 .container {
+  padding: 70px;
   width: 661px;
   height: 763px;
   background: #C4C4C4;
-}
-
-.content {
   display: flex;
   flex-direction: column;
 }
-
-.search-rep {
-  margin: 70px;
-  height: 200px;
-}
-.search-rep input {
+.container input {
   width: 100%;
   height: 60px;
   font-size: 40px;
   border: none;
 }
 
-.context-res {
+.options__context-menu {
   display: none;
   background: white;
-  width: 100%;
-}
-.context-res select {
-  width: 100%;
 }
 
-.opt {
+.options__container {
+  width: 100%;
+  overflow: hidden;
   background: #E3E3E3;
 }
-.opt option {
+.options__container option {
   border: 1px solid black;
   font-size: 30px;
   width: 100%;
 }
-.opt option[selected] {
+.options__container option[selected] {
   background: #65CDF9;
 }
 
-.results {
-  margin: 0 70px 70px 70px;
+.results__container {
+  margin: 35px 0 70px 0;
 }
 
-.test {
+.option_created {
+  height: 100px;
   position: relative;
-  background: green;
+  font-family: Roboto serif;
+  border: 1px solid black;
+  background: #E27BEB;
+  line-height: 0;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  font-size: 16px;
 }
 
-.del-btn {
+.btn_delete {
   height: 60px;
   width: 60px;
   position: absolute;
-  top: 25%;
+  top: 20%;
   right: 10px;
 }
 
