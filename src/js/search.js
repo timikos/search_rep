@@ -57,7 +57,7 @@ function getRequest(text) {
   }
 }
 
-let debGetRequest = debounce(getRequest, 600)
+let debGetRequest = debounce(getRequest, 400)
 
 function createTemplateResult(element){
   const fragment = document.createDocumentFragment()
@@ -92,11 +92,14 @@ optGroupResults.addEventListener("click", (e) => {
   let target = e.target
   let arrRepositories = Array.from(resultsArea.children)
   arrRepositories.push(createTemplateResult(target))
+
   arrRepositories.forEach(elem => {
     if (resultsArea.children.length < 3){
       resultsArea.appendChild(elem)
     }
   })
+  searchArea.value = ""
+  optGroupResults.style.display = "none"
 })
 
 
