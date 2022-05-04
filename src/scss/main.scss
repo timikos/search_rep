@@ -1,0 +1,63 @@
+.container {
+  width: 661px;
+  height: 763px;
+  background: $color-background;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-rep {
+  margin: 70px;
+  height: 200px;
+
+  input {
+    width: 100%;
+    height: 60px;
+    font-size: 40px;
+    border: none;
+  }
+}
+
+.context-res {
+  display: none;
+  background: white;
+  width: 100%;
+
+  select{
+    width: 100%;
+  }
+}
+
+.opt {
+
+  background: $color-background-opt;
+  option{
+    border: 1px solid black;
+    font-size: 30px;
+    width: 100%;
+    &[selected] {
+      background: $color-background-opt-selected;
+    }
+  }
+}
+
+.results {
+  margin: 0 70px 70px 70px;
+}
+
+.test {
+  position: relative;
+  background: green;
+}
+
+.del-btn {
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  top: 25%;
+  right: 10px;
+}
+
